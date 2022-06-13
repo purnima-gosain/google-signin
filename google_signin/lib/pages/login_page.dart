@@ -16,31 +16,7 @@ class _LogInPageState extends State<LogInPage> {
         appBar: AppBar(
           title: const Center(child: Text("Login")),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.white),
-              child: Row(children: [
-                const SizedBox(
-                  width: 30,
-                ),
-                Image.network(
-                  "https://avatars.githubusercontent.com/u/1342004?s=280&v=4",
-                  height: 50,
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                const Text(
-                  "Sign in with Google",
-                  style: TextStyle(color: Colors.black),
-                )
-              ]),
-              onPressed: () {},
-            ),
-          ),
-        ));
+        body: loginUI());
   }
 
   loginUI() {
@@ -54,24 +30,56 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   loggedInUi(LoginController model) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          backgroundImage:
-              Image.network(model.userDetails!.photoUrl ?? "").image,
-          radius: 50,
-        ),
-        Text(model.userDetails!.displayName ?? ""),
-        Text(model.userDetails!.email ?? ""),
-        ActionChip(
-            avatar: const Icon(Icons.logout),
-            label: const Text("logout"),
-            onPressed: () {})
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundImage:
+                Image.network(model.userDetails!.photoUrl ?? "").image,
+            radius: 50,
+          ),
+          Text(model.userDetails!.displayName ?? ""),
+          Text(model.userDetails!.email ?? ""),
+          ActionChip(
+              avatar: const Icon(Icons.logout),
+              label: const Text("logout"),
+              onPressed: () {
+                Provider.of<LoginController>(context, listen: false).logout();
+              })
+        ],
+      ),
     );
   }
 
-  loginControllers(BuildContext context) {}
+  loginControllers(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Center(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.white),
+          child: Row(children: [
+            const SizedBox(
+              width: 30,
+            ),
+            Image.network(
+              "https://avatars.githubusercontent.com/u/1342004?s=280&v=4",
+              height: 50,
+            ),
+            const SizedBox(
+              width: 30,
+            ),
+            const Text(
+              "Sign in with Google",
+              style: TextStyle(color: Colors.black),
+            )
+          ]),
+          onPressed: () {
+            Provider.of<LoginController>(context, listen: false).googleLogin();
+          },
+        ),
+      ),
+    );
+  }
 }
